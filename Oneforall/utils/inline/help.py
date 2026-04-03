@@ -1,7 +1,7 @@
 from typing import Union
 
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-
+from pyrogram.enums import ButtonStyle
 from Oneforall import app
 
 
@@ -11,14 +11,17 @@ def help_pannel(_, START: Union[bool, int] = None):
         InlineKeyboardButton(
             text=_["BACK_PAGE"],
             callback_data=f"mbot_cb",
+            style=ButtonStyle.PRIMARY,
         ),
         InlineKeyboardButton(
             text=_["BACK_BUTTON"],
             callback_data=f"settingsback_helper",
+            style=ButtonStyle.PRIMARY,
         ),
         InlineKeyboardButton(
             text=_["NEXT_PAGE"],
             callback_data=f"mbot_cb",
+            style=ButtonStyle.PRIMARY,
         ),
     ]
     mark = second if START else first
@@ -104,7 +107,7 @@ def help_pannel(_, START: Union[bool, int] = None):
                     callback_data="help_callback hb16",
                 ),
                 InlineKeyboardButton(
-                    "fun game",
+                    "🎮 ғᴜɴ ɢᴀᴍᴇ",
                     callback_data="help_callback hb21",
                 ),
             ],
@@ -118,7 +121,7 @@ def help_pannel(_, START: Union[bool, int] = None):
                     callback_data="help_callback hb19",
                 ),
                 InlineKeyboardButton(
-                    "fsub",
+                    "✨ ғsᴜʙ",
                     callback_data="help_callback hb20",
                 ),
             ],
