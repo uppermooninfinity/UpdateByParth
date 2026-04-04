@@ -50,7 +50,7 @@ async def stream(
         return
         # Define intro URL
     intro_url = "https://files.catbox.moe/swa9ev.mp3"  #made by @sukuna_Dev
-    
+
     if forceplay:
         await Hotty.force_stop_stream(chat_id)
     if streamtype == "playlist":
@@ -123,6 +123,7 @@ async def stream(
                 run = await app.send_photo(
                     original_chat_id,
                     photo=img,
+                    has_spoiler=True,
                     caption=_["stream_1"].format(
                         f"https://t.me/{app.username}?start=info_{vidid}",
                         title[:18],
@@ -147,6 +148,7 @@ async def stream(
             upl = close_markup(_)
             return await app.send_photo(
                 original_chat_id,
+                has_spoiler=True,
                 photo=carbon,
                 caption=_["play_21"].format(position, link),
                 reply_markup=upl,
@@ -182,6 +184,7 @@ async def stream(
             await app.send_photo(
                 chat_id=original_chat_id,
                 photo=img,
+                has_spoiler=True,
                 caption=_["queue_4"].format(
                     position, title[:18], duration_min, user_name
                 ),
@@ -214,6 +217,7 @@ async def stream(
             run = await app.send_photo(
                 original_chat_id,
                 photo=img,
+                has_spoiler=True,
                 caption=_["stream_1"].format(
                     f"https://t.me/{app.username}?start=info_{vidid}",
                     title[:18],
@@ -332,6 +336,7 @@ async def stream(
         vidid = result["vidid"]
         title = (result["title"]).title()
         thumbnail = result["thumb"]
+        has_spoiler=True,
         duration_min = "Live Track"
         status = True if video else None
         if await is_active_chat(chat_id):
@@ -383,6 +388,7 @@ async def stream(
             run = await app.send_photo(
                 original_chat_id,
                 photo=img,
+                has_spoiler=True,
                 caption=_["stream_1"].format(
                     f"https://t.me/{app.username}?start=info_{vidid}",
                     title[:23],
