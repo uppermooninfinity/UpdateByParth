@@ -117,7 +117,7 @@ async def start_pm(client, message: Message, _):
         return
 
     await add_served_user(message.from_user.id)
-    await message.react("❤️")
+    await message.react("🍓")
 
     accha = await message.reply_text(text=random.choice(EMOJIOS))
     await asyncio.sleep(1.3)
