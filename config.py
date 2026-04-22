@@ -101,7 +101,7 @@ votemode = {}
 autoclean = []
 confirmer = {}
 
-
+START_VID_URL = "https://graph.org/file/cf625887fec30073e4dc2-50b5ed761913336b28.mp4"
 PING_IMG_URL = os.getenv("PING_IMG_URL", "https://graph.org/file/589eaf30d8f0c5d7fca43-888d02b66f59afa6d0.jpg")
 PLAYLIST_IMG_URL = "https://graph.org/file/589eaf30d8f0c5d7fca43-888d02b66f59afa6d0.jpg"
 STATS_IMG_URL = "https://graph.org/file/589eaf30d8f0c5d7fca43-888d02b66f59afa6d0.jpg"
