@@ -7,7 +7,7 @@ from pyrogram.types import Message
 from Oneforall import app
 from Oneforall.misc import SUDOERS
 
-SPEED_VIDEO = "https://graph.org/file/308891fd6e656bcc70f0e-272ff13d24d1820cf5.mp4"
+SPEED_VIDEO = "https://graph.org/file/1b58d0e9a9903c2be34c7-a75edcf8858140bc50.mp4"
 
 
 def run_speedtest():
