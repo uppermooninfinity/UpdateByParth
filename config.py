@@ -102,17 +102,17 @@ autoclean = []
 confirmer = {}
 
 
-PING_IMG_URL = os.getenv("PING_IMG_URL", "https://files.catbox.moe/nndfm5.jpg")
-PLAYLIST_IMG_URL = "https://graph.org/file/3a907478d7a13ff1e8ecb-606e29f797b109ab82.jpg"
-STATS_IMG_URL = "https://graph.org/file/d22cec7c75e26f36edff7-0ce8cae0037d4aa0aa.jpg"
-TELEGRAM_AUDIO_URL = "https://graph.org/file/d22cec7c75e26f36edff7-0ce8cae0037d4aa0aa.jpg"
-TELEGRAM_VIDEO_URL = "https://graph.org/file/d22cec7c75e26f36edff7-0ce8cae0037d4aa0aa.jpg"
-STREAM_IMG_URL = "https://graph.org/file/d22cec7c75e26f36edff7-0ce8cae0037d4aa0aa.jpg"
-SOUNCLOUD_IMG_URL = "https://graph.org/file/d22cec7c75e26f36edff7-0ce8cae0037d4aa0aa.jpg"
-YOUTUBE_IMG_URL = "https://graph.org/file/d22cec7c75e26f36edff7-0ce8cae0037d4aa0aa.jpg"
-SPOTIFY_ARTIST_IMG_URL = "https://graph.org/file/d22cec7c75e26f36edff7-0ce8cae0037d4aa0aa.jpg"
-SPOTIFY_ALBUM_IMG_URL = "https://graph.org/file/d22cec7c75e26f36edff7-0ce8cae0037d4aa0aa.jpg"
-SPOTIFY_PLAYLIST_IMG_URL = "https://graph.org/file/d22cec7c75e26f36edff7-0ce8cae0037d4aa0aa.jpg"
+PING_IMG_URL = os.getenv("PING_IMG_URL", "https://graph.org/file/589eaf30d8f0c5d7fca43-888d02b66f59afa6d0.jpg")
+PLAYLIST_IMG_URL = "https://graph.org/file/589eaf30d8f0c5d7fca43-888d02b66f59afa6d0.jpg"
+STATS_IMG_URL = "https://graph.org/file/589eaf30d8f0c5d7fca43-888d02b66f59afa6d0.jpg"
+TELEGRAM_AUDIO_URL = "https://graph.org/file/589eaf30d8f0c5d7fca43-888d02b66f59afa6d0.jpg"
+TELEGRAM_VIDEO_URL = "https://graph.org/file/589eaf30d8f0c5d7fca43-888d02b66f59afa6d0.jpg"
+STREAM_IMG_URL = "https://graph.org/file/589eaf30d8f0c5d7fca43-888d02b66f59afa6d0.jpg"
+SOUNCLOUD_IMG_URL = "https://graph.org/file/589eaf30d8f0c5d7fca43-888d02b66f59afa6d0.jpg"
+YOUTUBE_IMG_URL = "https://graph.org/file/589eaf30d8f0c5d7fca43-888d02b66f59afa6d0.jpg"
+SPOTIFY_ARTIST_IMG_URL = "https://graph.org/file/589eaf30d8f0c5d7fca43-888d02b66f59afa6d0.jpg"
+SPOTIFY_ALBUM_IMG_URL = "https://graph.org/file/589eaf30d8f0c5d7fca43-888d02b66f59afa6d0.jpg"
+SPOTIFY_PLAYLIST_IMG_URL = "https://graph.org/file/589eaf30d8f0c5d7fca43-888d02b66f59afa6d0.jpg"
 
 START_IMG_URL = os.getenv("START_IMG_URL")
 
