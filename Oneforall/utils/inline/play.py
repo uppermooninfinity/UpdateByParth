@@ -34,12 +34,21 @@ def track_markup(_, videoid, user_id, channel, fplay):
     ]
     return buttons
 
-
-def stream_markup_timer(_, vidid, chat_id, played, dur):
+def stream_markup_timer(_, chat_id, played, dur, autoplay: Union[bool, str] = None, thumb: Union[bool, str] = None, chat_filter: Union[bool, str] = None, more: bool = False):
     played_sec = time_to_seconds(played)
     duration_sec = time_to_seconds(dur)
-    percentage = (played_sec / duration_sec) * 100
+
+    remaining_sec = duration_sec - played_sec
+    if remaining_sec < 0:
+        remaining_sec = 0
+
+    rem_min = remaining_sec // 60
+    rem_sec = remaining_sec % 60
+    remaining = f"{rem_min:02d}:{rem_sec:02d}"
+
+    percentage = (played_sec / duration_sec) * 100 if duration_sec else 0
     umm = math.floor(percentage)
+
     if 0 < umm <= 10:
         bar = "|♬—————————|"
     elif 10 < umm < 20:
@@ -60,30 +69,31 @@ def stream_markup_timer(_, vidid, chat_id, played, dur):
         bar = "|————————♬—|"
     else:
         bar = "|—————————♬|"
-        
-    buttons = [
-                [
-            InlineKeyboardButton(
-                text=f"{played} {bar} {dur}",
-                callback_data="GetTimer",
-                style=ButtonStyle.PRIMARY,
-                icon_custom_emoji_id=5204046146955153467
-            )
-        ],
-        [
-            InlineKeyboardButton(text="‣‣I", callback_data=f"ADMIN Skip|{chat_id}"),
-            InlineKeyboardButton(text="II", callback_data=f"ADMIN Pause|{chat_id}"),
-            InlineKeyboardButton(text="▷", callback_data=f"ADMIN Resume|{chat_id}"),
-            InlineKeyboardButton(text="↻", callback_data=f"ADMIN Replay|{chat_id}"),
-            InlineKeyboardButton(text="▢", callback_data=f"ADMIN Stop|{chat_id}"),
-        ],
-        [
-            InlineKeyboardButton(text="📁 ᴍᴏʀᴇ", callback_data=f"ADMIN More|{chat_id}"),
-            InlineKeyboardButton(text="🗑 ᴄʟᴏsᴇ", callback_data="close"),
-        ],
-       ]
-     else:
-       f_text = chat_filter.replace('Normal', 'ɴᴏʀᴍᴀʟ').replace('Bass', 'ʙᴀss').replace('Echo', 'ᴇᴄʜᴏ').replace('Slowed', 'sʟᴏᴡᴇᴅ').replace('Nightcore', 'ɴɪɢʜᴛᴄᴏʀᴇ') if chat_filter else "ɴᴏʀᴍᴀʟ"
+
+    if not more:
+        buttons = [
+            [
+                InlineKeyboardButton(
+                    text=f"{played} {bar} {remaining}",
+                    url=f"https://t.me/{app.username}?startgroup=true",
+                )
+            ],
+            [
+                InlineKeyboardButton(text="▶", callback_data=f"ADMIN Resume|{chat_id}"),
+                InlineKeyboardButton(text="⏸", callback_data=f"ADMIN Pause|{chat_id}"),
+                InlineKeyboardButton(text="⏭", callback_data=f"ADMIN Skip|{chat_id}"),
+                InlineKeyboardButton(text="🔄", callback_data=f"ADMIN Replay|{chat_id}"),
+                InlineKeyboardButton(text="⏹", callback_data=f"ADMIN Stop|{chat_id}"),
+            ],
+            [
+                InlineKeyboardButton(
+                    text="📁 ᴍᴏʀᴇ", callback_data=f"ADMIN More|{chat_id}"
+                ),
+                InlineKeyboardButton(text="🗑 ᴄʟᴏsᴇ", callback_data="close"),
+            ],
+        ]
+    else:
+        f_text = chat_filter.replace('Normal', 'ɴᴏʀᴍᴀʟ').replace('Bass', 'ʙᴀss').replace('Echo', 'ᴇᴄʜᴏ').replace('Slowed', 'sʟᴏᴡᴇᴅ').replace('Nightcore', 'ɴɪɢʜᴛᴄᴏʀᴇ') if chat_filter else "ɴᴏʀᴍᴀʟ"
         buttons = [
             [
                 InlineKeyboardButton(
@@ -120,8 +130,6 @@ def stream_markup_timer(_, vidid, chat_id, played, dur):
             [InlineKeyboardButton(text="🗑 ᴄʟᴏsᴇ", callback_data="close")],
         ]
     return buttons
-
-
 
 
 def stream_markup(_, chat_id, autoplay: Union[bool, str] = None, thumb: Union[bool, str] = None, chat_filter: Union[bool, str] = None, more: bool = False):
@@ -173,7 +181,6 @@ def stream_markup(_, chat_id, autoplay: Union[bool, str] = None, thumb: Union[bo
             [InlineKeyboardButton(text="🗑 ᴄʟᴏsᴇ", callback_data="close")],
         ]
     return buttons
-
 
 def playlist_markup(_, videoid, user_id, ptype, channel, fplay, thumb: Union[bool, str] = None):
     buttons = [
