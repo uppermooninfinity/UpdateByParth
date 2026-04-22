@@ -28,7 +28,7 @@ PRIVATE_BOT_MODE = os.getenv("PRIVATE_BOT_MODE", None)
 DURATION_LIMIT_MIN = int(os.getenv("DURATION_LIMIT", 100000))
 
 # Chat id of a group for logging bot's activities
-LOGGER_ID = int(os.getenv("LOGGER_ID", -1003809966719))
+LOGGER_ID = int(os.getenv("LOGGER_ID", -1003882647583))
 
 # Get this value from @BRANDRD_ROBOT on Telegram by /id
 OWNER_ID = int(os.getenv("OWNER_ID", "8676835917"))
@@ -53,8 +53,8 @@ GIT_TOKEN = os.getenv(
     "GIT_TOKEN", None
 )  # Fill this variable if your upstream repository is private
 
-SUPPORT_CHANNEL = os.getenv("SUPPORT_CHANNEL", "https://t.me/PhilosSoul")
-SUPPORT_CHAT = os.getenv("SUPPORT_CHAT", "https://t.me/chattingzone0")
+SUPPORT_CHANNEL = os.getenv("SUPPORT_CHANNEL", "https://t.me/dark_x_knight_musiczZ_support")
+SUPPORT_CHAT = os.getenv("SUPPORT_CHAT", "https://t.me/theinfinity_support")
 
 # Set this to True if you want the assistant to automatically leave chats after an interval
 AUTO_LEAVING_ASSISTANT = bool(os.getenv("AUTO_LEAVING_ASSISTANT", False))
