@@ -1,42 +1,37 @@
+#
+# Copyright (C) 2021-2022 by TheAloneteam@Github, < https://github.com/TheAloneTeam >.
+#
+# This file is part of < https://github.com/TheAloneTeam/AloneMusic > project,
+# and is released under the "GNU v3.0 License Agreement".
+# Please see < https://github.com/TheAloneTeam/AloneMusic/blob/master/LICENSE >
+#
+# All rights reserved.
+from time import time
+
 from pyrogram import filters
 from pyrogram.enums import ChatType
 from pyrogram.errors import MessageNotModified
-from pyrogram.types import (
-    CallbackQuery,
-    InlineKeyboardButton,
-    InlineKeyboardMarkup,
-    InputMediaPhoto,
-    InputMediaVideo,
-    Message,
-)
+from pyrogram.types import (CallbackQuery, InlineKeyboardButton,
+                            InlineKeyboardMarkup, Message)
 
-from config import BANNED_USERS, OWNER_ID, START_IMG_URL
+import config
 from Oneforall import app
-from Oneforall.utils.database import (
-    add_nonadmin_chat,
-    get_authuser,
-    get_authuser_names,
-    get_playmode,
-    get_playtype,
-    get_upvote_count,
-    is_nonadmin_chat,
-    is_skipmode,
-    remove_nonadmin_chat,
-    set_playmode,
-    set_playtype,
-    set_upvotes,
-    skip_off,
-    skip_on,
-)
+from Oneforall.utils.database import (add_nonadmin_chat, autoplay_off,
+                                       autoplay_on, get_authuser,
+                                       get_authuser_names, get_playmode,
+                                       get_playtype, get_upvote_count,
+                                       is_autoplay_on, is_nonadmin_chat,
+                                       is_skipmode, is_thumb_on,
+                                       remove_nonadmin_chat, set_playmode,
+                                       set_playtype, set_upvotes, skip_off,
+                                       skip_on, thumb_off, thumb_on)
 from Oneforall.utils.decorators.admins import ActualAdminCB
 from Oneforall.utils.decorators.language import language, languageCB
-from Oneforall.utils.inline.settings import (
-    auth_users_markup,
-    playmode_users_markup,
-    setting_markup,
-    vote_mode_markup,
-)
+from Oneforall.utils.inline.settings import (auth_users_markup,
+                                              playmode_users_markup,
+                                              setting_markup, vote_mode_markup)
 from Oneforall.utils.inline.start import private_panel
+from config import BANNED_USERS, OWNER_ID
 
 
 @app.on_message(
@@ -51,17 +46,6 @@ async def settings_mar(client, message: Message, _):
     )
 
 
-@app.on_callback_query(filters.regex("gib_source") & ~BANNED_USERS)
-@languageCB
-async def gib_repo(client, CallbackQuery, _):
-    await CallbackQuery.edit_message_media(
-        InputMediaVideo("https://files.catbox.moe/8qigce.mp4"),
-        reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton(text="ʙᴀᴄᴋ", callback_data=f"settingsback_helper")]]
-        ),
-    )
-
-
 @app.on_callback_query(filters.regex("settings_helper") & ~BANNED_USERS)
 @languageCB
 async def settings_cb(client, CallbackQuery, _):
@@ -72,10 +56,55 @@ async def settings_cb(client, CallbackQuery, _):
     buttons = setting_markup(_)
     return await CallbackQuery.edit_message_text(
         _["setting_1"].format(
-            CallbackQuery.message.chat.title,
+            app.mention,
             CallbackQuery.message.chat.id,
+            CallbackQuery.message.chat.title,
         ),
         reply_markup=InlineKeyboardMarkup(buttons),
+    )
+
+
+@app.on_callback_query(filters.regex("^bot_info_data$"))
+async def show_bot_info(c: app, q: CallbackQuery):
+    start = time()
+    x = await c.send_message(q.message.chat.id, "ᴘɪɴɢ ᴘᴏɴɢ 💕..")
+    delta_ping = time() - start
+    await x.delete()
+    txt = f"""💌 ᴘɪɴɢ ᴘᴏɴɢ ʙᴀʙʏ...
+
+• ᴅᴀᴛᴀʙᴀsᴇ: ᴏɴʟɪɴᴇ
+• ʏᴏᴜᴛᴜʙᴇ ᴀᴘɪ: ʀᴇsᴘᴏɴsɪᴠᴇ
+• ʙᴏᴛ sᴇʀᴠᴇʀ: ʀᴜɴɴɪɴɢ sᴍᴏᴏᴛʜʟʏ
+• ʀᴇsᴘᴏɴsᴇ ᴛɪᴍᴇ: ᴏᴘᴛɪᴍᴀʟ
+• ᴀᴘɪ ᴘɪɴɢ: {delta_ping * 1000:.3f} ms   
+
+• ᴇᴠᴇʀʏᴛʜɪɴɢ ʟᴏᴏᴋs ɢᴏᴏᴅ!
+"""
+    await q.answer(txt, show_alert=True)
+    return
+
+
+@app.on_callback_query(filters.regex("Alone_Music") & ~BANNED_USERS)
+@languageCB
+async def support(client, CallbackQuery, _):
+    await CallbackQuery.edit_message_text(
+        text="ʜᴇʀᴇ ᴀʀᴇ ꜱᴏᴍᴇ ɪᴍᴘᴏʀᴛᴀɴᴛ ʟɪɴᴋꜱ.",
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(text="ᴅᴇᴠs", user_id=config.OWNER_ID),
+                ],
+                [
+                    InlineKeyboardButton(text="sᴜᴘᴘᴏʀᴛ", url=config.SUPPORT_CHAT),
+                    InlineKeyboardButton(text="ᴄʜᴀɴɴᴇʟ", url=config.SUPPORT_CHANNEL),
+                ],
+                [
+                    InlineKeyboardButton(
+                        text="ʙᴀᴄᴋ", callback_data="settingsback_helper"
+                    )
+                ],
+            ]
+        ),
     )
 
 
@@ -88,15 +117,9 @@ async def settings_back_markup(client, CallbackQuery: CallbackQuery, _):
         pass
     if CallbackQuery.message.chat.type == ChatType.PRIVATE:
         await app.resolve_peer(OWNER_ID)
-        OWNER = OWNER_ID
         buttons = private_panel(_)
-        return await CallbackQuery.edit_message_media(
-            InputMediaPhoto(
-                media=START_IMG_URL,
-                caption=_["start_2"].format(
-                    CallbackQuery.from_user.first_name, app.mention
-                ),
-            ),
+        return await CallbackQuery.edit_message_text(
+            _["start_2"].format(CallbackQuery.from_user.mention, app.mention),
             reply_markup=InlineKeyboardMarkup(buttons),
         )
     else:
@@ -108,7 +131,7 @@ async def settings_back_markup(client, CallbackQuery: CallbackQuery, _):
 
 @app.on_callback_query(
     filters.regex(
-        pattern=r"^(SEARCHANSWER|PLAYMODEANSWER|PLAYTYPEANSWER|AUTHANSWER|ANSWERVOMODE|VOTEANSWER|PM|AU|VM)$"
+        pattern=r"^(SEARCHANSWER|PLAYMODEANSWER|PLAYTYPEANSWER|AUTOPLAYANSWER|THUMBNAILANSWER|AUTHANSWER|ANSWERVOMODE|VOTEANSWER|PM|AU|VM)$"
     )
     & ~BANNED_USERS
 )
@@ -143,6 +166,22 @@ async def without_Admin_rights(client, CallbackQuery, _):
             )
         except:
             return
+    if command == "THUMBNAILANSWER":
+        try:
+            return await CallbackQuery.answer(
+                "» ᴛᴏɢɢʟᴇ ᴀʟʙᴜᴍ ᴀʀᴛ ᴅɪsᴘʟᴀʏ. ᴅɪsᴀʙʟɪɴɢ ɪᴛ ʀᴇᴅᴜᴄᴇs ᴅᴀᴛᴀ ʟᴏᴀᴅ ᴀɴᴅ ᴍᴀɪɴᴛᴀɪɴs ᴀ ᴍɪɴɪᴍᴀʟɪsᴛ ᴄʜᴀᴛ ʟᴏᴏᴋ.",
+                show_alert=True,
+            )
+        except:
+            return
+    if command == "AUTOPLAYANSWER":
+        try:
+            return await CallbackQuery.answer(
+                "» ᴡʜᴇɴ ᴇɴᴀʙʟᴇᴅ, ᴛʜᴇ ʙᴏᴛ ᴡɪʟʟ ᴀᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ ᴘʟᴀʏ ʀᴇʟᴀᴛᴇᴅ sᴏɴɢs ᴡʜᴇɴ ᴛʜᴇ ǫᴜᴇᴜᴇ ɪs ᴇᴍᴘᴛʏ.",
+                show_alert=True,
+            )
+        except:
+            return
     if command == "ANSWERVOMODE":
         current = await get_upvote_count(CallbackQuery.message.chat.id)
         try:
@@ -172,7 +211,9 @@ async def without_Admin_rights(client, CallbackQuery, _):
             Playtype = None
         else:
             Playtype = True
-        buttons = playmode_users_markup(_, Direct, Group, Playtype)
+        Autoplay = await is_autoplay_on(CallbackQuery.message.chat.id)
+        Thumbnail = await is_thumb_on(CallbackQuery.message.chat.id)
+        buttons = playmode_users_markup(_, Direct, Group, Playtype, Autoplay, Thumbnail)
     if command == "AU":
         try:
             await CallbackQuery.answer(_["set_cb_1"], show_alert=True)
@@ -235,7 +276,7 @@ async def addition(client, CallbackQuery, _):
 
 
 @app.on_callback_query(
-    filters.regex(pattern=r"^(MODECHANGE|CHANNELMODECHANGE|PLAYTYPECHANGE)$")
+    filters.regex(pattern=r"^(MODECHANGE|CHANNELMODECHANGE|PLAYTYPECHANGE|AUTOPLAYCHANGE|THUMBNAILCHANGE)$")
     & ~BANNED_USERS
 )
 @ActualAdminCB
@@ -245,22 +286,9 @@ async def playmode_ans(client, CallbackQuery, _):
         is_non_admin = await is_nonadmin_chat(CallbackQuery.message.chat.id)
         if not is_non_admin:
             await add_nonadmin_chat(CallbackQuery.message.chat.id)
-            Group = None
         else:
             await remove_nonadmin_chat(CallbackQuery.message.chat.id)
-            Group = True
-        playmode = await get_playmode(CallbackQuery.message.chat.id)
-        if playmode == "Direct":
-            Direct = True
-        else:
-            Direct = None
-        playty = await get_playtype(CallbackQuery.message.chat.id)
-        if playty == "Everyone":
-            Playtype = None
-        else:
-            Playtype = True
-        buttons = playmode_users_markup(_, Direct, Group, Playtype)
-    if command == "MODECHANGE":
+    elif command == "MODECHANGE":
         try:
             await CallbackQuery.answer(_["set_cb_3"], show_alert=True)
         except:
@@ -268,22 +296,9 @@ async def playmode_ans(client, CallbackQuery, _):
         playmode = await get_playmode(CallbackQuery.message.chat.id)
         if playmode == "Direct":
             await set_playmode(CallbackQuery.message.chat.id, "Inline")
-            Direct = None
         else:
             await set_playmode(CallbackQuery.message.chat.id, "Direct")
-            Direct = True
-        is_non_admin = await is_nonadmin_chat(CallbackQuery.message.chat.id)
-        if not is_non_admin:
-            Group = True
-        else:
-            Group = None
-        playty = await get_playtype(CallbackQuery.message.chat.id)
-        if playty == "Everyone":
-            Playtype = False
-        else:
-            Playtype = True
-        buttons = playmode_users_markup(_, Direct, Group, Playtype)
-    if command == "PLAYTYPECHANGE":
+    elif command == "PLAYTYPECHANGE":
         try:
             await CallbackQuery.answer(_["set_cb_3"], show_alert=True)
         except:
@@ -291,21 +306,38 @@ async def playmode_ans(client, CallbackQuery, _):
         playty = await get_playtype(CallbackQuery.message.chat.id)
         if playty == "Everyone":
             await set_playtype(CallbackQuery.message.chat.id, "Admin")
-            Playtype = False
         else:
             await set_playtype(CallbackQuery.message.chat.id, "Everyone")
-            Playtype = True
-        playmode = await get_playmode(CallbackQuery.message.chat.id)
-        if playmode == "Direct":
-            Direct = True
+    elif command == "AUTOPLAYCHANGE":
+        try:
+            await CallbackQuery.answer(_["set_cb_3"], show_alert=True)
+        except:
+            pass
+        if await is_autoplay_on(CallbackQuery.message.chat.id):
+            await autoplay_off(CallbackQuery.message.chat.id)
         else:
-            Direct = None
-        is_non_admin = await is_nonadmin_chat(CallbackQuery.message.chat.id)
-        if not is_non_admin:
-            Group = True
+            await autoplay_on(CallbackQuery.message.chat.id)
+    elif command == "THUMBNAILCHANGE":
+        try:
+            await CallbackQuery.answer(_["set_cb_3"], show_alert=True)
+        except:
+            pass
+        if await is_thumb_on(CallbackQuery.message.chat.id):
+            await thumb_off(CallbackQuery.message.chat.id)
         else:
-            Group = None
-        buttons = playmode_users_markup(_, Direct, Group, Playtype)
+            await thumb_on(CallbackQuery.message.chat.id)
+
+    # Fetch updated states
+    playmode = await get_playmode(CallbackQuery.message.chat.id)
+    Direct = True if playmode == "Direct" else None
+    is_non_admin = await is_nonadmin_chat(CallbackQuery.message.chat.id)
+    Group = True if not is_non_admin else None
+    playty = await get_playtype(CallbackQuery.message.chat.id)
+    Playtype = None if playty == "Everyone" else True
+    Autoplay = await is_autoplay_on(CallbackQuery.message.chat.id)
+    Thumbnail = await is_thumb_on(CallbackQuery.message.chat.id)
+
+    buttons = playmode_users_markup(_, Direct, Group, Playtype, Autoplay, Thumbnail)
     try:
         return await CallbackQuery.edit_message_reply_markup(
             reply_markup=InlineKeyboardMarkup(buttons)
@@ -349,12 +381,10 @@ async def authusers_mar(client, CallbackQuery, _):
             upl = InlineKeyboardMarkup(
                 [
                     [
-                        InlineKeyboardButton(
-                            text=_["BACK_BUTTON"], callback_data=f"AU"
-                        ),
+                        InlineKeyboardButton(text=_["BACK_BUTTON"], callback_data="AU"),
                         InlineKeyboardButton(
                             text=_["CLOSE_BUTTON"],
-                            callback_data=f"close",
+                            callback_data="close",
                         ),
                     ]
                 ]
@@ -386,7 +416,7 @@ async def authusers_mar(client, CallbackQuery, _):
 @app.on_callback_query(filters.regex("VOMODECHANGE") & ~BANNED_USERS)
 @ActualAdminCB
 async def vote_change(client, CallbackQuery, _):
-    command = CallbackQuery.matches[0].group(1)
+    CallbackQuery.matches[0].group(1)
     try:
         await CallbackQuery.answer(_["set_cb_3"], show_alert=True)
     except:
@@ -406,3 +436,4 @@ async def vote_change(client, CallbackQuery, _):
         )
     except MessageNotModified:
         return
+                        
