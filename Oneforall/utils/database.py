@@ -7,6 +7,7 @@ from Oneforall.core.mongo import mongodb
 authdb = mongodb.adminauth
 authuserdb = mongodb.authuser
 autoenddb = mongodb.autoend
+autoplaydb = mongodb.autoplay
 assdb = mongodb.assistants
 blacklist_chatdb = mongodb.blacklistChat
 blockeddb = mongodb.blockedusers
@@ -28,7 +29,8 @@ queriesdb = mongodb.queries
 userdb = mongodb.userstats
 videodb = mongodb.vipvideocalls
 chatsdbc = mongodb.chatsc  # for clone
-usersdbc = mongodb.tgusersdbc  # for clone
+usersdbc = mongodb.tgusersdbc  # for clon
+thumbdb = mongodb.thumbdb
 
 # Shifting to memory [mongo sucks often]
 active = []
@@ -980,3 +982,57 @@ async def add_served_chat_clone(chat_id: int):
 
 async def delete_served_chat_clone(chat_id: int):
     await chatsdbc.delete_one({"chat_id": chat_id})
+
+
+
+async def is_autoplay_on(chat_id: int) -> bool:
+    mode = autoplay.get(chat_id)
+    if mode is None:
+        user = await autoplaydb.find_one({"chat_id": chat_id})
+        if not user:
+            autoplay[chat_id] = False
+            return False
+        autoplay[chat_id] = True
+        return True
+    return mode
+
+
+async def autoplay_on(chat_id: int):
+    autoplay[chat_id] = True
+    user = await autoplaydb.find_one({"chat_id": chat_id})
+    if not user:
+        return await autoplaydb.insert_one({"chat_id": chat_id})
+
+
+async def autoplay_off(chat_id: int):
+    autoplay[chat_id] = False
+    user = await autoplaydb.find_one({"chat_id": chat_id})
+    if user:
+        return await autoplaydb.delete_one({"chat_id": chat_id})
+
+
+async def is_thumb_on(chat_id: int) -> bool:
+    mode = thumbnail.get(chat_id)
+    if mode is None:
+        user = await thumbdb.find_one({"chat_id": chat_id})
+        if not user:
+            thumbnail[chat_id] = True
+            return True
+        thumbnail[chat_id] = False
+        return False
+    return mode
+
+
+async def thumb_on(chat_id: int):
+    thumbnail[chat_id] = True
+    user = await thumbdb.find_one({"chat_id": chat_id})
+    if user:
+        return await thumbdb.delete_one({"chat_id": chat_id})
+
+
+async def thumb_off(chat_id: int):
+    thumbnail[chat_id] = False
+    user = await thumbdb.find_one({"chat_id": chat_id})
+    if not user:
+        return await thumbdb.insert_one({"chat_id": chat_id})
+
