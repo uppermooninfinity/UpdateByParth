@@ -21,6 +21,11 @@ def track_markup(_, videoid, user_id, channel, fplay):
         ],
         [
             InlineKeyboardButton(
+                text="🖼️ ᴛʜᴜᴍʙɴᴀɪʟ : ᴏɴ" if thumb else "🖼️ ᴛʜᴜᴍʙɴᴀɪʟ : ᴏғғ",
+                callback_data=f"MusicThumb {videoid}|{user_id}|{channel}|{fplay}",
+            ),
+        [
+            InlineKeyboardButton(
                 text=_["CLOSE_BUTTON"],
                 callback_data=f"forceclose {videoid}|{user_id}",
             )
@@ -71,47 +76,130 @@ def stream_markup_timer(_, vidid, chat_id, played, dur):
             InlineKeyboardButton(text="↻", callback_data=f"ADMIN Replay|{chat_id}"),
             InlineKeyboardButton(text="▢", callback_data=f"ADMIN Stop|{chat_id}"),
         ],
-        [InlineKeyboardButton(text="•𝐔ᴘᴅᴀᴛᴇs•", url="https://t.me/theteaminfinitynetwork")],
-        [InlineKeyboardButton(text=_["CLOSE_BUTTON"], callback_data="close")],
-    ]
-    return buttons
-
-
-def stream_markup(_, videoid, chat_id):
-    buttons = [
         [
-            InlineKeyboardButton(text="▷", callback_data=f"ADMIN Resume|{chat_id}"),
-            InlineKeyboardButton(text="II", callback_data=f"ADMIN Pause|{chat_id}"),
-            InlineKeyboardButton(text="↻", callback_data=f"ADMIN Replay|{chat_id}"),
-            InlineKeyboardButton(text="‣‣I", callback_data=f"ADMIN Skip|{chat_id}"),
-            InlineKeyboardButton(text="▢", callback_data=f"ADMIN Stop|{chat_id}"),
+            InlineKeyboardButton(text="📁 ᴍᴏʀᴇ", callback_data=f"ADMIN More|{chat_id}"),
+            InlineKeyboardButton(text="🗑 ᴄʟᴏsᴇ", callback_data="close"),
         ],
-        [InlineKeyboardButton(text="•𝐔ᴘᴅᴀᴛᴇs•", url="https://t.me/theteaminfinitynetwork")],
-        [InlineKeyboardButton(text=_["CLOSE_BUTTON"], callback_data="close")],
-    ]
+       ]
+     else:
+       f_text = chat_filter.replace('Normal', 'ɴᴏʀᴍᴀʟ').replace('Bass', 'ʙᴀss').replace('Echo', 'ᴇᴄʜᴏ').replace('Slowed', 'sʟᴏᴡᴇᴅ').replace('Nightcore', 'ɴɪɢʜᴛᴄᴏʀᴇ') if chat_filter else "ɴᴏʀᴍᴀʟ"
+        buttons = [
+            [
+                InlineKeyboardButton(
+                    text=f"{played} {bar} {remaining}",
+                    url=f"https://t.me/{app.username}?startgroup=true",
+                )
+            ],
+            [
+                InlineKeyboardButton(text="▶", callback_data=f"ADMIN Resume|{chat_id}"),
+                InlineKeyboardButton(text="⏸", callback_data=f"ADMIN Pause|{chat_id}"),
+                InlineKeyboardButton(text="⏭", callback_data=f"ADMIN Skip|{chat_id}"),
+                InlineKeyboardButton(text="🔄", callback_data=f"ADMIN Replay|{chat_id}"),
+                InlineKeyboardButton(text="⏹", callback_data=f"ADMIN Stop|{chat_id}"),
+            ],
+            [
+                InlineKeyboardButton(
+                    text="🔄 ᴀᴜᴛᴏᴘʟᴀʏ : ᴏɴ" if autoplay else "🔄 ᴀᴜᴛᴏᴘʟᴀʏ : ᴏғғ",
+                    callback_data=f"ADMIN Autoplay|{chat_id}",
+                ),
+                InlineKeyboardButton(
+                    text="🖼️ ᴛʜᴜᴍʙɴᴀɪʟ : ᴏɴ" if thumb else "🖼️ ᴛʜᴜᴍʙɴᴀɪʟ : ᴏғғ",
+                    callback_data=f"ADMIN Thumb|{chat_id}",
+                ),
+            ],
+            [
+                InlineKeyboardButton(
+                    text=f"🪄 {f_text}",
+                    callback_data=f"ADMIN Filter|{chat_id}",
+                ),
+                InlineKeyboardButton(
+                    text="🔙 ʙᴀᴄᴋ", callback_data=f"ADMIN Back|{chat_id}"
+                ),
+            ],
+            [InlineKeyboardButton(text="🗑 ᴄʟᴏsᴇ", callback_data="close")],
+        ]
     return buttons
 
 
-def playlist_markup(_, videoid, user_id, ptype, channel, fplay):
+
+
+def stream_markup(_, chat_id, autoplay: Union[bool, str] = None, thumb: Union[bool, str] = None, chat_filter: Union[bool, str] = None, more: bool = False):
+    if not more:
+        buttons = [
+            [
+                InlineKeyboardButton(text="▶", callback_data=f"ADMIN Resume|{chat_id}"),
+                InlineKeyboardButton(text="⏸", callback_data=f"ADMIN Pause|{chat_id}"),
+                InlineKeyboardButton(text="🔄", callback_data=f"ADMIN Replay|{chat_id}"),
+                InlineKeyboardButton(text="⏭", callback_data=f"ADMIN Skip|{chat_id}"),
+                InlineKeyboardButton(text="⏹", callback_data=f"ADMIN Stop|{chat_id}"),
+            ],
+            [
+                InlineKeyboardButton(
+                    text="📁 ᴍᴏʀᴇ", callback_data=f"ADMIN More|{chat_id}"
+                ),
+                InlineKeyboardButton(text="🗑 ᴄʟᴏsᴇ", callback_data="close"),
+            ],
+        ]
+    else:
+        f_text = chat_filter.replace('Normal', 'ɴᴏʀᴍᴀʟ').replace('Bass', 'ʙᴀss').replace('Echo', 'ᴇᴄʜᴏ').replace('Slowed', 'sʟᴏᴡᴇᴅ').replace('Nightcore', 'ɴɪɢʜᴛᴄᴏʀᴇ') if chat_filter else "ɴᴏʀᴍᴀʟ"
+        buttons = [
+            [
+                InlineKeyboardButton(text="▶", callback_data=f"ADMIN Resume|{chat_id}"),
+                InlineKeyboardButton(text="⏸", callback_data=f"ADMIN Pause|{chat_id}"),
+                InlineKeyboardButton(text="🔄", callback_data=f"ADMIN Replay|{chat_id}"),
+                InlineKeyboardButton(text="⏭", callback_data=f"ADMIN Skip|{chat_id}"),
+                InlineKeyboardButton(text="⏹", callback_data=f"ADMIN Stop|{chat_id}"),
+            ],
+            [
+                InlineKeyboardButton(
+                    text="🔄 ᴀᴜᴛᴏᴘʟᴀʏ : ᴏɴ" if autoplay else "🔄 ᴀᴜᴛᴏᴘʟᴀʏ : ᴏғғ",
+                    callback_data=f"ADMIN Autoplay|{chat_id}",
+                ),
+                InlineKeyboardButton(
+                    text="🖼️ ᴛʜᴜᴍʙɴᴀɪʟ : ᴏɴ" if thumb else "🖼️ ᴛʜᴜᴍʙɴᴀɪʟ : ᴏғғ",
+                    callback_data=f"ADMIN Thumb|{chat_id}",
+                ),
+            ],
+            [
+                InlineKeyboardButton(
+                    text=f"🪄 {f_text}",
+                    callback_data=f"ADMIN Filter|{chat_id}",
+                ),
+                InlineKeyboardButton(
+                    text="🔙 ʙᴀᴄᴋ", callback_data=f"ADMIN Back|{chat_id}"
+                ),
+            ],
+            [InlineKeyboardButton(text="🗑 ᴄʟᴏsᴇ", callback_data="close")],
+        ]
+    return buttons
+
+
+def playlist_markup(_, videoid, user_id, ptype, channel, fplay, thumb: Union[bool, str] = None):
     buttons = [
         [
             InlineKeyboardButton(
-                text=_["P_B_1"],
+                text="🎵 ᴀᴜᴅɪᴏ",
                 callback_data=f"brandedPlaylists {videoid}|{user_id}|{ptype}|a|{channel}|{fplay}",
             ),
             InlineKeyboardButton(
-                text=_["P_B_2"],
+                text="🎥 ᴠɪᴅᴇᴏ",
                 callback_data=f"brandedPlaylists {videoid}|{user_id}|{ptype}|v|{channel}|{fplay}",
             ),
         ],
         [
             InlineKeyboardButton(
-                text=_["CLOSE_BUTTON"],
+                text="🖼️ ᴛʜᴜᴍʙɴᴀɪʟ : ᴏɴ" if thumb else "🖼️ ᴛʜᴜᴍʙɴᴀɪʟ : ᴏғғ",
+                callback_data=f"PlaylistThumb {videoid}|{user_id}|{ptype}|{channel}|{fplay}",
+            ),
+            InlineKeyboardButton(
+                text="✖ ᴄʟᴏsᴇ",
                 callback_data=f"forceclose {videoid}|{user_id}",
             ),
         ],
     ]
     return buttons
+
+
 
 
 def livestream_markup(_, videoid, user_id, mode, channel, fplay):
