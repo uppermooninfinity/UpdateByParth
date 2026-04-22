@@ -16,7 +16,6 @@ from config import (
 from Oneforall import YouTube, app
 from Oneforall.utils.database import (autoplay_off, autoplay_on,
                                        get_active_chats, get_lang,
-                                       get_filter, set_filter,
                                        get_upvote_count, is_active_chat,
                                        is_autoplay_on, is_music_playing,
                                        is_nonadmin_chat, is_thumb_on,
@@ -256,7 +255,6 @@ async def del_back_playlist(client, CallbackQuery, _):
                     playing[0]["dur"],
                     await is_autoplay_on(chat_id),
                     await is_thumb_on(chat_id),
-                    await get_filter(chat_id),
                     more=True
                 )
             await CallbackQuery.edit_message_reply_markup(
@@ -287,7 +285,6 @@ async def del_back_playlist(client, CallbackQuery, _):
                     playing[0]["dur"],
                     await is_autoplay_on(chat_id),
                     await is_thumb_on(chat_id),
-                    await get_filter(chat_id),
                     more=False
                 )
             await CallbackQuery.edit_message_reply_markup(
@@ -295,34 +292,6 @@ async def del_back_playlist(client, CallbackQuery, _):
             )
         except:
             pass
-    elif command == "Filter":
-        playing = db.get(chat_id)
-        if not playing:
-            return await CallbackQuery.answer(_["queue_2"], show_alert=True)
-
-        try:
-            duration_seconds = int(playing[0]["seconds"])
-        except:
-            duration_seconds = 0
-
-        file_path = playing[0]["file"]
-        current_filter = await get_filter(chat_id)
-        filters_list = ["Normal", "Bass", "Echo", "Slowed", "Nightcore"]
-
-        if current_filter not in filters_list:
-            next_filter = "Normal"
-        else:
-            idx = filters_list.index(current_filter)
-            next_filter = filters_list[(idx + 1) % len(filters_list)]
-
-        await set_filter(chat_id, next_filter)
-        await CallbackQuery.answer(f"» ᴀᴘᴘʟʏɪɴɢ {next_filter.upper()} ғɪʟᴛᴇʀ...", show_alert=True)
-
-        try:
-            await Alone.apply_filter(chat_id, file_path, next_filter.lower(), playing)
-        except Exception as e:
-            return await CallbackQuery.message.reply_text(f"» ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴘᴘʟʏ ғɪʟᴛᴇʀ.\n\nᴇʀʀᴏʀ: {e}")
-
         try:
             more = playing[0].get("more", False)
             if duration_seconds == 0:
