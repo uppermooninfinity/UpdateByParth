@@ -1,4 +1,3 @@
-#FROM nikolaik/python-nodejs:python3.10-nodejs19
 FROM python:3.10-slim-bookworm
 
 # System dependencies install karein (Bookworm repositories ke saath)
