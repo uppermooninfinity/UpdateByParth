@@ -14,12 +14,12 @@
     "env": {
       "API_ID": {
         "description": "Get this value from https://my.telegram.org",
-        "value": "22731333",
+        "value": "38116283",
         "required": true
       },
       "API_HASH": {
         "description": "Get this value from https://my.telegram.org",
-        "value": "f8f993acb1d5f51c950ba873404d9af5",
+        "value": "fb8638157056f21bdafc61e41e147f88",
         "required": true
       },
       "BOT_TOKEN": {
@@ -29,16 +29,16 @@
       },
       "MONGO_DB_URI": {
         "description": "Get a mongodb url from https://cloud.mongodb.com.",
-        "value": "mongodb+srv://I-LOVE-PDF-BOT:I-LOVE-PDF-BOT@cluster0.c51o3a9.mongodb.net/?retryWrites=true&w=majority",
+        "value": "mongodb+srv://knight4563:knight4563@cluster0.a5br0se.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
         "required": true
       },
       "OWNER_ID": {
         "description": "The user id of user whom you would like to add as OWNER.",
-        "value": "7078181502",
+        "value": "8285730532",
         "required": true
       },
       "STRING_SESSION": {
-        "description": "A Pyrogram v2 String Session from @BRANDEDSTRINGSESSION_BOT on Telegram.",
+        "description": "A Pyrogram v2 String Session from on Telegram.",
         "value": "",
         "required": true
       },
@@ -54,12 +54,12 @@
       },
       "UPSTREAM_REPO": {
         "description": "dont fill",
-        "value": "https://github.com/Gokukhan1/faketry",
+        "value": "https://github.com/Gxinfinity/TestR",
         "required": false
       },
       "LOGGER_ID": {
         "description": "Your Log Group ID, add your bot and promote as an admin with full rights!. Don't Add Channel's ID.",
-        "value": "-1002009280180",
+        "value": "-1003809966719",
         "required": true
       }
     },
